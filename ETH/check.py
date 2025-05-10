@@ -23,10 +23,10 @@ Passive Options (for 'passive' mode):
   all           Run IP lookup, subdomain discovery, and DNS lookup.
 
 Example Commands:
-  python3 check.py example.com active portscan 80,443,22
-  python3 check.py example.com passive subdomain
-  python3 check.py 8.8.8.8 passive dns
-  python3 check.py example.com active all 1-100
+  python check.py example.com active portscan 80,443,22
+  python check.py example.com passive subdomain
+  python check.py 8.8.8.8 passive dns
+  python check.py example.com active all 1-100
 
 Note: Ports can be provided as a comma-separated list (e.g., 80,443,22) or as a range (e.g., 1-100).
 """)

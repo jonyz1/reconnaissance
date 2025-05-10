@@ -45,3 +45,5 @@ def scan_ports(target, ports_input=None):
         print(f"[+] Scan complete. Open ports: {open_ports}")
 
     return open_ports
+def run(target, ports_input):
+    scan_ports(target, ports_input) 
