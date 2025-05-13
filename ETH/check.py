@@ -31,9 +31,9 @@ Example Commands:
 Note: Ports can be provided as a comma-separated list (e.g., 80,443,22) or as a range (e.g., 1-100).
 """)
 
-def run_active(target, option, ports_input):
+def run_active(target, option, ports_input,method):
     if option == 'portscan':
-        portscan.run(target, ports_input)
+        portscan.run(target, ports_input,method)
     elif option == 'version':
         version_detection.run(target, ports_input)
     elif option == 'os':
@@ -75,10 +75,12 @@ if __name__ == "__main__":
     target = sys.argv[1]
     mode = sys.argv[2]
     option = sys.argv[3]
-    ports_input = sys.argv[4] if len(sys.argv) > 4 else None
+    method = "sys.argv[4] if len(sys.argv) > 4 else None"
+    ports_input = sys.argv[4] if len(sys.argv) >= 4 else None
+    # method = sys.argv[4] 
 
     if mode == 'active':
-        run_active(target, option, ports_input)
+        run_active(target, option, ports_input,method)
     elif mode == 'passive':
         run_passive(target, option)
     else:

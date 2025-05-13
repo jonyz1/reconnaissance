@@ -1,15 +1,4 @@
-# def os_detection(banner):
-#     if banner:
-#         if "Linux" in banner:
-#             print(f"[+] Operating System: Likely Linux")
-#         elif "Windows" in banner:
-#             print(f"[+] Operating System: Likely Windows")
-#         else:
-#             print(f"[-] Could not determine OS from banner")
-
-# def run(target, ports_input):
-#     # Assuming we are passed open ports and banners from portscan
-#     pass
+from scapy.all import IP, TCP, UDP, sr1
 import socket
 
 def os_detection(banner):
@@ -30,6 +19,32 @@ def os_detection(banner):
     else:
         print("[-] No banner received.")
 
+def scapy_fingerprint(target, port=80):
+    ip = IP(dst=target)
+    syn = TCP(dport=port, flags="S")
+    resp = sr1(ip/syn, timeout=2, verbose=0)
+
+    if not resp:
+        print("[-] No response.")
+        return
+
+    # Extract TTL and window size
+    ttl = resp.ttl
+    window = resp[TCP].window
+    flags = resp.sprintf("%TCP.flags%")
+    
+    print(f"[+] TTL: {ttl}, Window Size: {window}, Flags: {flags}")
+
+    # Very simple heuristic
+    if ttl >= 128 and window in [8192, 64240]:
+        print("[+] Likely OS: Windows")
+    elif ttl >= 64 and window in [5840, 14600]:
+        print("[+] Likely OS: Linux")
+    elif ttl >= 255:
+        print("[+] Likely OS: Network device or BSD variant")
+    else:
+        print("[?] Unknown OS")
+
 def run(target, ports_input):
     from active.portscan import parse_ports
 
@@ -48,3 +63,4 @@ def run(target, ports_input):
             print(f"[-] Port {port} timed out.")
         except Exception as e:
             print(f"[-] Error on port {port}: {e}")
+    # scapy_fingerprint(target, port=80)
