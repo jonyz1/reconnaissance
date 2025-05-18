@@ -11,10 +11,11 @@ Modes:
   passive       Perform passive reconnaissance (e.g., IP lookup, subdomain discovery, DNS lookup).
 
 Active Options (for 'active' mode):
-  portscan      Scan for open ports on the target.
-  version       Detect versions of services running on open ports.
-  os            Detect the operating system based on banners.
-  all           Run portscan, version detection, and OS detection.
+  portscan auto         Scan for open ports on the target.
+  portscan tcp/udp/syn  Scan with scapy
+  version               Detect versions of services running on open ports.
+  os                    Detect the operating system based on banners.
+  all                   Run portscan, version detection, and OS detection.
 
 Passive Options (for 'passive' mode):
   ip            Lookup the IP address of the target.
@@ -60,7 +61,7 @@ def run_passive(target, option):
         print("[-] Invalid passive option.")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         print("[-] Please specify a target, mode, and option. Use 'help' for assistance.")
         sys.exit(1)
 
@@ -69,15 +70,24 @@ if __name__ == "__main__":
         sys.exit(0)
 
     if len(sys.argv) < 4:
-        print("Usage: python3 check.py <target> <mode> <option> [ports]")
+        print("Usage: python check.py <target> <mode> <option> [ports] [method]")
         sys.exit(1)
 
     target = sys.argv[1]
     mode = sys.argv[2]
     option = sys.argv[3]
-    method = "sys.argv[4] if len(sys.argv) > 4 else None"
-    ports_input = sys.argv[4] if len(sys.argv) >= 4 else None
-    # method = sys.argv[4] 
+    method="None"
+    if mode=="active":
+        if option=="portscan":
+            method = sys.argv[5] if len(sys.argv) > 4 else "None"
+            if method == "None":
+                sys.exit(1)
+        ports_input = sys.argv[4] if len(sys.argv) > 4 else "None"
+        if ports_input == "None":
+            print("Include Ports at the end")
+            sys.exit(1)
+        
+
 
     if mode == 'active':
         run_active(target, option, ports_input,method)
