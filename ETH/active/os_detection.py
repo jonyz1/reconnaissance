@@ -6,7 +6,7 @@ def os_detection(banner):
         banner = banner.decode(errors="ignore")
         if "Linux" in banner:
             print(f"[+] Operating System: Likely Linux")
-        elif "Windows" in banner:
+        elif "Windows" in banner or "Microsoft" in banner:
             print(f"[+] Operating System: Likely Windows")
         elif "Unix" in banner:
             print(f"[+] Operating System: Likely Unix")
@@ -51,6 +51,7 @@ def run(target, ports_input):
     ports = parse_ports(ports_input)
     for port in ports:
         try:
+            scapy_fingerprint(target, ports)
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(1)
             sock.connect((target, port))

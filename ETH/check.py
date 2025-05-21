@@ -87,13 +87,14 @@ if __name__ == "__main__":
         else:
              print("[-] Please specify a target, mode, and option. Use 'help' for assistance.")
              sys.exit(1)
+        method="auto"
         if mode=="active":
             if option=="portscan":
-                method = sys.argv[5] if len(sys.argv) == 6 else "none"
+                method = sys.argv[5] if len(sys.argv) >= 6 else "none"
                 if method == "None":
                     print("Usage: python check.py <target> <mode> <option> [ports] [method]")
                     sys.exit(1)
-            ports_input = sys.argv[4] if len(sys.argv) ==5  else "None"
+            ports_input = sys.argv[4] if len(sys.argv) >=5  else "None"
             if ports_input == "None":
                 print("Include Ports at the end")
                 sys.exit(1)
