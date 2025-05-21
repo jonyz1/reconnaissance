@@ -1,6 +1,8 @@
 import sys
 from active import portscan, version_detection, os_detection
 from passive import ip_lookup, subdomain_lookup, dns_lookup
+from Vulnerability_identification import vuln_scanner
+
 
 def show_help():
     print("""
@@ -93,5 +95,7 @@ if __name__ == "__main__":
         run_active(target, option, ports_input,method)
     elif mode == 'passive':
         run_passive(target, option)
+    elif mode =='vuln':
+        vuln_scanner.run()
     else:
         print("[-] Invalid mode. Use 'active' or 'passive'.")
