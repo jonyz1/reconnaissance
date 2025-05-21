@@ -6,11 +6,12 @@ from Vulnerability_identification import vuln_scanner
 
 def show_help():
     print("""
-Usage: python3 check.py <target> <mode> <option> [ports]
+Usage: python check.py <target> <mode> <option> [ports]
 
 Modes:
   active        Perform active reconnaissance (e.g., port scanning, version detection, OS detection).
   passive       Perform passive reconnaissance (e.g., IP lookup, subdomain discovery, DNS lookup).
+  vuln          Perform passive Vulnerability identification.
 
 Active Options (for 'active' mode):
   portscan auto         Scan for open ports on the target.
@@ -42,7 +43,7 @@ def run_active(target, option, ports_input,method):
     elif option == 'os':
         os_detection.run(target, ports_input)
     elif option == 'all':
-        portscan.run(target, ports_input)
+        portscan.run(target, ports_input,method)
         version_detection.run(target, ports_input)
         os_detection.run(target, ports_input)
     else:
@@ -63,7 +64,7 @@ def run_passive(target, option):
         print("[-] Invalid passive option.")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    if len(sys.argv) <= 3:
         print("[-] Please specify a target, mode, and option. Use 'help' for assistance.")
         sys.exit(1)
 
@@ -71,24 +72,28 @@ if __name__ == "__main__":
         show_help()
         sys.exit(0)
 
-    if len(sys.argv) < 4:
+    if len(sys.argv) > 6:
         print("Usage: python check.py <target> <mode> <option> [ports] [method]")
         sys.exit(1)
 
     target = sys.argv[1]
     mode = sys.argv[2]
-    option = sys.argv[3]
-    method="None"
-    if mode=="active":
-        if option=="portscan":
-            method = sys.argv[5] if len(sys.argv) > 4 else "None"
-            if method == "None":
+    if mode=="vuln":
+        pass  
+    else:
+        option = sys.argv[3]
+        method="None"
+        if mode=="active":
+            if option=="portscan":
+                method = sys.argv[5] if len(sys.argv) == 6 else "none"
+                if method == "None":
+                    print("Usage: python check.py <target> <mode> <option> [ports] [method]")
+                    sys.exit(1)
+            ports_input = sys.argv[4] if len(sys.argv) ==5  else "None"
+            if ports_input == "None":
+                print("Include Ports at the end")
                 sys.exit(1)
-        ports_input = sys.argv[4] if len(sys.argv) > 4 else "None"
-        if ports_input == "None":
-            print("Include Ports at the end")
-            sys.exit(1)
-        
+            
 
 
     if mode == 'active':
