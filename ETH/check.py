@@ -96,6 +96,6 @@ if __name__ == "__main__":
     elif mode == 'passive':
         run_passive(target, option)
     elif mode =='vuln':
-        vuln_scanner.run()
+        vuln_scanner.run(target)
     else:
         print("[-] Invalid mode. Use 'active' or 'passive'.")

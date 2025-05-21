@@ -1,47 +1,7 @@
-# import requests
-# from requests.exceptions import ConnectionError, Timeout, HTTPError
-
-# def find_subdomains(target):
-#     url = f"https://api.sublist3r.com/search.php?domain={target}"
-
-#     try:
-#         response = requests.get(url)
-#         response.raise_for_status()  # Check if the request was successful (HTTP 200)
-#         subdomains = response.json()
-#         if subdomains:
-#             print(f"[+] Found subdomains for {target}:")
-#             for subdomain in subdomains:
-#                 print(f" - {subdomain}")
-#         else:
-#             print(f"[-] No subdomains found for {target}.")
-#     except ConnectionError:
-#         print("[-] Connection error. Could not reach the subdomain lookup service.")
-#     except Timeout:
-#         print("[-] The request timed out. Please try again later.")
-#     except HTTPError as e:
-#         print(f"[-] HTTP error occurred: {e}")
-#     except Exception as e:
-#         print(f"[-] An unexpected error occurred: {e}")
-
-# def run(target):
-#     find_subdomains(target)
-
-
 import requests
 from requests.exceptions import ConnectionError, Timeout, HTTPError
 import json
 import re
-
-def get_sublist3r_subdomains(target):
-    print("[*] Fetching from Sublist3r...")
-    url = f"https://api.sublist3r.com/search.php?domain={target}"
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        return response.json()
-    except Exception as e:
-        print(f"[-] Sublist3r error: {e}")
-        return []
 
 def get_crtsh_subdomains(target):
     print("[*] Fetching from crt.sh...")
@@ -65,7 +25,7 @@ def get_crtsh_subdomains(target):
 def find_subdomains(target):
     subdomains = set()
 
-    subdomains.update(get_sublist3r_subdomains(target))
+    # subdomains.update(get_sublist3r_subdomains(target))
     subdomains.update(get_crtsh_subdomains(target))
 
     if subdomains:
