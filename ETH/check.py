@@ -64,7 +64,7 @@ def run_passive(target, option):
         print("[-] Invalid passive option.")
 
 if __name__ == "__main__":
-    if len(sys.argv) <= 3:
+    if len(sys.argv) < 3:
         print("[-] Please specify a target, mode, and option. Use 'help' for assistance.")
         sys.exit(1)
 
@@ -81,8 +81,12 @@ if __name__ == "__main__":
     if mode=="vuln":
         pass  
     else:
-        option = sys.argv[3]
-        method="None"
+        if len(sys.argv) >= 4:
+             option = sys.argv[3]
+             method="None"
+        else:
+             print("[-] Please specify a target, mode, and option. Use 'help' for assistance.")
+             sys.exit(1)
         if mode=="active":
             if option=="portscan":
                 method = sys.argv[5] if len(sys.argv) == 6 else "none"
@@ -94,8 +98,6 @@ if __name__ == "__main__":
                 print("Include Ports at the end")
                 sys.exit(1)
             
-
-
     if mode == 'active':
         run_active(target, option, ports_input,method)
     elif mode == 'passive':
